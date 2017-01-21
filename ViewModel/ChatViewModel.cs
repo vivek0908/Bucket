@@ -1,13 +1,15 @@
-﻿using System.Net;
+﻿using System.ComponentModel;
+using System.Net;
 using System.Net.Sockets;
 using System.Windows.Media;
+using WPF_Chat_ver1.Annotations;
 using WPF_Chat_ver1.Command;
 using WPF_Chat_ver1.Model;
 using WPF_Chat_ver1.Utility;
 
 namespace WPF_Chat_ver1.ViewModel
 {
-    internal class ChatViewModel
+    internal class ChatViewModel:INotifyPropertyChanged
     {
         private string myHostIP;
 
@@ -54,7 +56,11 @@ namespace WPF_Chat_ver1.ViewModel
         public string ServerMessage_Content
         {
             get { return myServerMessage_Content; }
-            set { myServerMessage_Content = value; }
+            set
+            {
+                myServerMessage_Content = value; 
+                OnPropertyChanged("ServerMessage_Content");
+            }
         }
 
         private Brush myServerMessage_Foreground=Brushes.DarkRed;
@@ -81,15 +87,8 @@ namespace WPF_Chat_ver1.ViewModel
             set
             {
                 myStartCommand = value;
-                Button_Send_State = true;
-                TextBox_Message_State = true;
-                Textbox_FrensIP_State = false;
-                Button_Start_State = false;
-                ServerMessage_Content = "Server Started";
-                ServerMessage_Foreground = Brushes.ForestGreen;
-                Button_Reset_State = true;
+                
 
-                myMsgs = ChatModel.MyMessage;
             }
         }
 
@@ -101,7 +100,6 @@ namespace WPF_Chat_ver1.ViewModel
             set
             {
                 mySendCommand = value;
-                myMsgs = ChatModel.MyMessage;
                 
             }
         }
@@ -119,7 +117,11 @@ namespace WPF_Chat_ver1.ViewModel
         public string MyMessages
         {
             get { return myMsgs; }
-            set { myMsgs = value; }
+            set
+            {
+                myMsgs = value;
+                OnPropertyChanged("MyMessages");
+            }
         }
         
 
@@ -128,24 +130,30 @@ namespace WPF_Chat_ver1.ViewModel
             myHostIP = ChatConnection.Instance.GetLocalIP();
             mySendCommand = new SendCommand();
             myStartCommand=new StartCommand();
-        }
-
-        // return the own ip
-        private string GetLocalIP()
-        {
-            IPHostEntry host;
-            host = Dns.GetHostEntry(Dns.GetHostName());
-            foreach (IPAddress ip in host.AddressList)
+            myStartCommand.CommunicationStarted += (sender, args) =>
             {
-                if (ip.AddressFamily == AddressFamily.InterNetwork)
-                {
-                    return ip.ToString();
-                }
-            }
-            return "127.0.0.1";
+                Button_Send_State = true;
+                TextBox_Message_State = true;
+                Textbox_FrensIP_State = false;
+                Button_Start_State = false;
+                ServerMessage_Foreground = Brushes.ForestGreen;
+                Button_Reset_State = true;
+                ServerMessage_Content = "Server Started";
+            };
+
+            mySendCommand.MessageUpdated += (sender, args) =>
+            {
+                MyMessages = ChatModel.MyMessage;
+            };
         }
 
-        
+        public event PropertyChangedEventHandler PropertyChanged;
 
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

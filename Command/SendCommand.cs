@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Sockets;
 using System.Text;
+using System.Windows;
 using System.Windows.Input;
-using System.Windows.Threading;
 using WPF_Chat_ver1.Model;
 using WPF_Chat_ver1.Utility;
 
@@ -12,14 +9,13 @@ namespace WPF_Chat_ver1.Command
 {
     internal class SendCommand:ICommand
     {
-        private ChatConnection myConnection;
         private string myTextMessage;
 
         public SendCommand()
         {
-            
-           // myTextMessage = textMessage;
         }
+
+        public event EventHandler MessageUpdated;
 
         public void Execute(object parameter)
         {
@@ -43,8 +39,11 @@ namespace WPF_Chat_ver1.Command
 
             // sending the message
             ChatConnection.Instance.ChatCommunication.Send(msg);
-           ChatModel.MyMessage= ("You : "+ msg);
-
+            ChatModel.MyMessage= ("You : "+ msg);
+            if (MessageUpdated != null)
+            {
+                MessageUpdated(this,EventArgs.Empty);
+            }
             //Dispatcher.Invoke(new Action(() =>
             //{
                 // add to listbox
