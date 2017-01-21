@@ -10,12 +10,11 @@ namespace WPF_Chat_ver1.Command
     internal class SendCommand:ICommand
     {
         private string myTextMessage;
-
+        private ChatModel myChatModel;
         public SendCommand()
         {
+            myChatModel = ChatModel.INSTANCE;
         }
-
-        public event EventHandler MessageUpdated;
 
         public void Execute(object parameter)
         {
@@ -39,18 +38,7 @@ namespace WPF_Chat_ver1.Command
 
             // sending the message
             ChatConnection.Instance.ChatCommunication.Send(msg);
-            ChatModel.MyMessage= ("You : "+ msg);
-            if (MessageUpdated != null)
-            {
-                MessageUpdated(this,EventArgs.Empty);
-            }
-            //Dispatcher.Invoke(new Action(() =>
-            //{
-                // add to listbox
-                //listBox1.Items.Add("You: " + myTextMessage);
-
-            //}), DispatcherPriority.SystemIdle, null);
-
+            myChatModel.MESSAGESEND = ("You : " + testmsg);
         }
     }
 }

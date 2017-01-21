@@ -33,8 +33,8 @@
         </Label>
         <Label Foreground="#FFF4E8E8" Margin="5,72,736.8,0" VerticalAlignment="Top" Height="25" Content="Fren's IP" Grid.Column="1"/>
         <Button Margin="0,63,7.8,0" x:Name="button_Start" IsEnabled="{Binding Button_Start_State}" VerticalAlignment="Top" Height="34" Content="Start" Grid.Column="1" HorizontalAlignment="Right" Width="71" Command="{Binding STARTCommand}" CommandParameter="{Binding Text,ElementName=textbox_FrensIP}" />
-        <TextBox Margin="82,126,123.8,0" IsEnabled="{Binding TextBox_Message_State}" x:Name="textBox_Message" VerticalAlignment="Top" Height="34" Text="" TextWrapping="Wrap" Grid.Column="1"/>
-        <Button Margin="0,126,7.6,0" IsEnabled="{Binding Button_Send_State}" x:Name="button_Send" VerticalAlignment="Top" Height="34" Content="Send" Grid.Column="1" HorizontalAlignment="Right" Width="71" Command="{Binding SENDCommand}" CommandParameter="{Binding Text,ElementName=textBox_Message}"/>
+        <TextBox Margin="82,114,123.8,0" IsEnabled="{Binding TextBox_Message_State}" x:Name="textBox_Message" VerticalAlignment="Top" Height="34" Text="" TextWrapping="Wrap" Grid.Column="1"/>
+        <Button Margin="0,114,7.8,0" IsEnabled="{Binding Button_Send_State}" x:Name="button_Send" VerticalAlignment="Top" Height="34" Content="Send" Grid.Column="1" HorizontalAlignment="Right" Width="71" Command="{Binding SENDCommand}" CommandParameter="{Binding Text,ElementName=textBox_Message}"/>
         <Label Foreground="#FFF4E8E8" Margin="5,126,736.6,0" VerticalAlignment="Top" Height="25" Content="Message 
 " Grid.Column="1"/>
         <Label x:Name="lblServerMessage" FontWeight="Bold" Background="#00090202" Foreground="{Binding ServerMessage_Foreground}" HorizontalAlignment="Center" Margin="696,9,11.8,0" VerticalAlignment="Top" Width="105" Height="25" Content="{Binding ServerMessage_Content}" Grid.Column="1" RenderTransformOrigin="0.5,0.5">

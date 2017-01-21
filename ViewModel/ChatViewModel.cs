@@ -19,20 +19,29 @@ namespace WPF_Chat_ver1.ViewModel
             set { myHostIP = value; }
         }
 
-        private bool myButton_Send_State=true;
+        private bool myButton_Send_State;
 
         public bool Button_Send_State
         {
             get { return myButton_Send_State; }
-            set { myButton_Send_State = value; }
+            set
+            {
+                myButton_Send_State = value;
+                OnPropertyChanged("Button_Send_State");
+            }
         }
 
-        private bool mytextBox_Message_State=true;
+        private bool mytextBox_Message_State;
 
         public bool TextBox_Message_State
         {
             get { return mytextBox_Message_State; }
-            set { mytextBox_Message_State = value; }
+            set
+            {
+                mytextBox_Message_State = value;
+                OnPropertyChanged("TextBox_Message_State");
+                
+            }
         }
 
         private bool mytextbox_FrensIP_State=true;
@@ -40,7 +49,12 @@ namespace WPF_Chat_ver1.ViewModel
         public bool Textbox_FrensIP_State
         {
             get { return mytextbox_FrensIP_State; }
-            set { mytextbox_FrensIP_State = value; }
+            set
+            {
+                mytextbox_FrensIP_State = value;
+                OnPropertyChanged("Textbox_FrensIP_State");
+                
+            }
         }
 
         private bool mybutton_Start_State=true;
@@ -48,7 +62,12 @@ namespace WPF_Chat_ver1.ViewModel
         public bool Button_Start_State
         {
             get { return mybutton_Start_State; }
-            set { mybutton_Start_State = value; }
+            set
+            {
+                mybutton_Start_State = value;
+                OnPropertyChanged("Button_Start_State");
+                
+            }
         }
 
         private string myServerMessage_Content="Server Stopped";
@@ -68,7 +87,12 @@ namespace WPF_Chat_ver1.ViewModel
         public Brush ServerMessage_Foreground
         {
             get { return myServerMessage_Foreground; }
-            set { myServerMessage_Foreground = value; }
+            set
+            {
+                myServerMessage_Foreground = value;
+                OnPropertyChanged("ServerMessage_Foreground");
+                
+            }
         }
 
         private bool mybutton_Reset_State;
@@ -76,7 +100,12 @@ namespace WPF_Chat_ver1.ViewModel
         public bool Button_Reset_State
         {
             get { return mybutton_Reset_State; }
-            set { mybutton_Reset_State = value; }
+            set
+            {
+                mybutton_Reset_State = value;
+                OnPropertyChanged("Button_Reset_State");
+                
+            }
         }
 
         private StartCommand myStartCommand;
@@ -141,10 +170,8 @@ namespace WPF_Chat_ver1.ViewModel
                 ServerMessage_Content = "Server Started";
             };
 
-            mySendCommand.MessageUpdated += (sender, args) =>
-            {
-                MyMessages = ChatModel.MyMessage;
-            };
+            ChatModel.INSTANCE.MessageReceived += (sender, args) => { MyMessages = ChatModel.INSTANCE.MESSAGERECIEVED; };
+            ChatModel.INSTANCE.MessageSend += (sender, args) => { MyMessages = ChatModel.INSTANCE.MESSAGESEND; };
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

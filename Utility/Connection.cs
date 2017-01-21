@@ -14,6 +14,7 @@ namespace WPF_Chat_ver1.Utility
         private static volatile ChatConnection instance;
         private static object syncRoot = new Object();
         private static EndPoint myEndPoint, myEndPointRemote;
+        private ChatModel myChatModel;
 
         private Socket myCommunication;
 
@@ -44,6 +45,7 @@ namespace WPF_Chat_ver1.Utility
         public ChatConnection()
         {
             myCommunication = SetupSocket();
+            myChatModel = ChatModel.INSTANCE;
         }
 
         internal void startCommunication(string frenip)
@@ -121,8 +123,8 @@ namespace WPF_Chat_ver1.Utility
                     //Dispatcher.Invoke(new Action(() =>
                     //{
                     // add to listbox
-                    ChatModel.MyMessage = ("Friend: " + fullmessage[0].ToString().Trim());
-
+                    myChatModel.MESSAGERECIEVED = ("Friend: " + fullmessage[0].ToString().Trim());
+                    
 
                     //}), DispatcherPriority.SystemIdle, null);
 
