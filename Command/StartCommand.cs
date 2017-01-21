@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows.Input;
-using WPF_Chat_ver1.Utility;
+using WPF_Chat_ver1.Communication;
 
 namespace WPF_Chat_ver1.Command
 {

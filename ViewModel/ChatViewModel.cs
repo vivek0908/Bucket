@@ -3,8 +3,8 @@ using System.ComponentModel;
 using System.Windows.Media;
 using WPF_Chat_ver1.Annotations;
 using WPF_Chat_ver1.Command;
+using WPF_Chat_ver1.Communication;
 using WPF_Chat_ver1.Model;
-using WPF_Chat_ver1.Utility;
 
 namespace WPF_Chat_ver1.ViewModel
 {
@@ -33,8 +33,6 @@ namespace WPF_Chat_ver1.ViewModel
         private ResetCommand myResetCommand;
 
         private ObservableCollection<string> myMsgs;
-
-        private string myFrensIPText;
 
         public string MyIP
         {
@@ -95,6 +93,8 @@ namespace WPF_Chat_ver1.ViewModel
                 OnPropertyChanged("Textbox_FrensIP_State");
             }
         }
+
+        private string myFrensIPText;
 
         public string FrensIPText
         {

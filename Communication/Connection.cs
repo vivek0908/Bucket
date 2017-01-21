@@ -6,15 +6,14 @@ using System.Text;
 using System.Windows;
 using WPF_Chat_ver1.Model;
 
-namespace WPF_Chat_ver1.Utility
+namespace WPF_Chat_ver1.Communication
 {
     internal class ChatConnection
     {
         private static volatile ChatConnection instance;
-        private static object syncRoot = new Object();
+        private static readonly object syncRoot = new Object();
         private static EndPoint myEndPoint, myEndPointRemote;
-        private ChatModel myChatModel;
-
+        private readonly ChatModel myChatModel;
         private Socket myCommunication;
 
         internal Socket ChatCommunication 
@@ -110,20 +109,20 @@ namespace WPF_Chat_ver1.Utility
                 if (size > 0)
                 {
                     // used to help us on getting the data
-                    byte[] aux = (byte[])ar.AsyncState;
+                    var aux = (byte[])ar.AsyncState;
 
                     // converts from data[] to string
                     var msg = Encoding.UTF8.GetString(aux);
 
-                    string[] fullmessage = msg.Split('*');
+                    var fullmessage = msg.Split('*');
 
-                    ObservableCollection<string> msgs = new ObservableCollection<string>();
+                    var msgs = new ObservableCollection<string>();
                     msgs.Add("Friend: " + fullmessage[0].ToString().Trim());
                     myChatModel.MESSAGERECIEVED = msgs;
                 }
 
                 // starts to listen again
-                byte[] buffer = new byte[1464];
+                var buffer = new byte[1464];
                 ChatCommunication.BeginReceiveFrom(buffer, 0, buffer.Length, SocketFlags.None,
                     ref myEndPointRemote, new AsyncCallback(OperatorCallBack), buffer);
             }

@@ -2,8 +2,8 @@
 using System.Collections.ObjectModel;
 using System.Text;
 using System.Windows.Input;
+using WPF_Chat_ver1.Communication;
 using WPF_Chat_ver1.Model;
-using WPF_Chat_ver1.Utility;
 
 namespace WPF_Chat_ver1.Command
 {
