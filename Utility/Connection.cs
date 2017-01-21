@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Collections.ObjectModel;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -68,22 +67,22 @@ namespace WPF_Chat_ver1.Utility
             catch (SocketException ex)
             {
                 MessageBox.Show(ex.Message + ",  Note : Are you providing a valid ip ?");
-                // SetupSocket();
+                 SetupSocket();
             }
             catch (FormatException ex)
             {
                 MessageBox.Show(ex.Message);
-                // SetupSocket();
+                 SetupSocket();
             }
             catch (ArgumentNullException ex)
             {
                 MessageBox.Show(ex.Message);
-                // SetupSocket();
+                 SetupSocket();
             }
             catch (ArgumentOutOfRangeException ex)
             {
                 MessageBox.Show(ex.Message);
-                // SetupSocket();
+                 SetupSocket();
             }
         }
 
@@ -119,15 +118,9 @@ namespace WPF_Chat_ver1.Utility
 
                     string[] fullmessage = msg.Split('*');
 
-                    // adds to listbox
-                    //Dispatcher.Invoke(new Action(() =>
-                    //{
-                    // add to listbox
-                    myChatModel.MESSAGERECIEVED = ("Friend: " + fullmessage[0].ToString().Trim());
-                    
-
-                    //}), DispatcherPriority.SystemIdle, null);
-
+                    ObservableCollection<string> msgs = new ObservableCollection<string>();
+                    msgs.Add("Friend: " + fullmessage[0].ToString().Trim());
+                    myChatModel.MESSAGERECIEVED = msgs;
                 }
 
                 // starts to listen again

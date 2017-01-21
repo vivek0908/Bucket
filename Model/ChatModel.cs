@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using WPF_Chat_ver1.Utility;
+using System.Collections.ObjectModel;
 
 namespace WPF_Chat_ver1.Model
 {
@@ -26,8 +22,8 @@ namespace WPF_Chat_ver1.Model
         }
 
         public event EventHandler MessageReceived;
-        private string myMessageRecieved;
-        public string MESSAGERECIEVED
+        private ObservableCollection<string> myMessageRecieved;
+        public ObservableCollection<string> MESSAGERECIEVED
         {
             get { return myMessageRecieved; }
             set
@@ -41,8 +37,8 @@ namespace WPF_Chat_ver1.Model
         }
 
         public event EventHandler MessageSend;
-        private string myMessageSend;
-        public string MESSAGESEND
+        private ObservableCollection<string> myMessageSend;
+        public ObservableCollection<string> MESSAGESEND
         {
             get { return myMessageSend; }
             set

@@ -19,7 +19,7 @@
             <ColumnDefinition Width="0*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <ListBox Background="NavajoWhite" IsSynchronizedWithCurrentItem="True" Foreground="Black" Margin="0,151,-0.2,13.2" Grid.Column="1" Name="listBox1" ItemsSource="{Binding MyMessages}" />
+        <ListBox Background="NavajoWhite" IsSynchronizedWithCurrentItem="True" Foreground="Black" Margin="0,151,-0.2,13.2" Grid.Column="1" Name="listBox1" ItemsSource="{Binding Path=MyMessages}"  />
         <TextBox Margin="82,63,123.8,0" x:Name="textbox_FrensIP" VerticalAlignment="Top" Height="38" Grid.Column="1" Text="" TextWrapping="Wrap"/>
         <Label Name="lblYourIP" FontWeight="Bold" Background="#00090202" Foreground="#FFF4E8E8" HorizontalAlignment="Center" Margin="352,8,355.8,0" VerticalAlignment="Top" Width="105" Height="25" Content="{Binding MyIP}" Grid.Column="1" RenderTransformOrigin="0.5,0.5">
             <Label.RenderTransform>

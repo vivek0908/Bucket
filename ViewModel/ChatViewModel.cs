@@ -1,6 +1,5 @@
-﻿using System.ComponentModel;
-using System.Net;
-using System.Net.Sockets;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows.Media;
 using WPF_Chat_ver1.Annotations;
 using WPF_Chat_ver1.Command;
@@ -141,9 +140,9 @@ namespace WPF_Chat_ver1.ViewModel
             set { myResetCommand = value; }
         }
 
-        private string myMsgs;
+        private ObservableCollection<string> myMsgs;
 
-        public string MyMessages
+        public ObservableCollection<string> MyMessages
         {
             get { return myMsgs; }
             set
@@ -172,6 +171,8 @@ namespace WPF_Chat_ver1.ViewModel
 
             ChatModel.INSTANCE.MessageReceived += (sender, args) => { MyMessages = ChatModel.INSTANCE.MESSAGERECIEVED; };
             ChatModel.INSTANCE.MessageSend += (sender, args) => { MyMessages = ChatModel.INSTANCE.MESSAGESEND; };
+
+            
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
