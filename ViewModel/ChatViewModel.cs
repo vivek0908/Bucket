@@ -3,6 +3,7 @@ using System.Net.Sockets;
 using System.Windows.Media;
 using WPF_Chat_ver1.Command;
 using WPF_Chat_ver1.Model;
+using WPF_Chat_ver1.Utility;
 
 namespace WPF_Chat_ver1.ViewModel
 {
@@ -124,7 +125,7 @@ namespace WPF_Chat_ver1.ViewModel
 
         public ChatViewModel()
         {
-            myHostIP = GetLocalIP();
+            myHostIP = ChatConnection.GetLocalIP();
             mySendCommand = new SendCommand();
             myStartCommand=new StartCommand();
         }
