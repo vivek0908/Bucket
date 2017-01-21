@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30501.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPF_Chat_ver1", "WPF_Chat_ver1.csproj", "{EB300352-0017-4588-99A1-77CF411E1491}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EB300352-0017-4588-99A1-77CF411E1491}.Debug|x86.ActiveCfg = Debug|x86
+		{EB300352-0017-4588-99A1-77CF411E1491}.Debug|x86.Build.0 = Debug|x86
+		{EB300352-0017-4588-99A1-77CF411E1491}.Release|x86.ActiveCfg = Release|x86
+		{EB300352-0017-4588-99A1-77CF411E1491}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
