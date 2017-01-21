@@ -35,7 +35,6 @@ namespace WPF_Chat_ver1.Utility
                             instance = new ChatConnection();
                     }
                 }
-
                 return instance;
             }
             
@@ -134,15 +133,12 @@ namespace WPF_Chat_ver1.Utility
             }
         }
 
-        private Socket SetupSocket()
+        internal Socket SetupSocket()
         {
             // set up socket
             myCommunication = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
             myCommunication.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
-
             return myCommunication;
         }
-
-
     }
 }

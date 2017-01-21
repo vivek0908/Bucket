@@ -10,6 +10,7 @@ namespace WPF_Chat_ver1.Command
     internal class SendCommand:ICommand
     {
         private ChatModel myChatModel;
+
         public SendCommand()
         {
             myChatModel = ChatModel.INSTANCE;
@@ -19,13 +20,6 @@ namespace WPF_Chat_ver1.Command
         {
             SendMessage(textBoxMessage.ToString());
         }
-
-        public bool CanExecute(object parameter)
-        {
-            return true;
-        }
-
-        public event EventHandler CanExecuteChanged;
 
         private void SendMessage(string message)
         {
@@ -40,5 +34,12 @@ namespace WPF_Chat_ver1.Command
             msgs.Add(("You : " + testmsg));
             myChatModel.MESSAGESEND = msgs;
         }
+
+        public bool CanExecute(object parameter)
+        {
+            return true;
+        }
+
+        public event EventHandler CanExecuteChanged;
     }
 }

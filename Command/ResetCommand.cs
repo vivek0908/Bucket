@@ -1,22 +1,29 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows.Input;
+using WPF_Chat_ver1.Annotations;
+using WPF_Chat_ver1.Utility;
 
 namespace WPF_Chat_ver1.Command
 {
-    class ResetCommand : ICommand
+    internal class ResetCommand : ICommand
     {
-        public void Execute(object parameter)
+        /// <see cref="ICommand.Execute"/>
+        public void Execute([NotNull] object parameter)
         {
-            throw new NotImplementedException();
+            ChatConnection.Instance.SetupSocket();
+            if (RESETRequested != null)
+            {
+                RESETRequested(this, EventArgs.Empty);
+            }
         }
 
-        public bool CanExecute(object parameter)
+        /// <see cref="ICommand.CanExecute"/>
+        public bool CanExecute([NotNull] object parameter)
         {
-            throw new NotImplementedException();
+            return true;
         }
+
+        public event EventHandler RESETRequested;
 
         public event EventHandler CanExecuteChanged;
     }

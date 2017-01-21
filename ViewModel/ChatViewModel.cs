@@ -12,13 +12,59 @@ namespace WPF_Chat_ver1.ViewModel
     {
         private string myHostIP;
 
+        private bool myButton_Send_State;
+
+        private bool mytextBox_Message_State;
+
+        private bool mytextbox_FrensIP_State=true;
+
+        private bool mybutton_Start_State=true;
+
+        private string myServerMessage_Content="Server Stopped";
+
+        private Brush myServerMessage_Foreground=Brushes.DarkRed;
+
+        private bool mybutton_Reset_State;
+
+        private StartCommand myStartCommand;
+
+        private SendCommand mySendCommand;
+
+        private ResetCommand myResetCommand;
+
+        private ObservableCollection<string> myMsgs;
+
+        private string myFrensIPText;
+
         public string MyIP
         {
             get { return myHostIP; }
             set { myHostIP = value; }
         }
 
-        private bool myButton_Send_State;
+        public StartCommand STARTCommand
+        {
+            get { return myStartCommand; }
+            set
+            {
+                myStartCommand = value;
+            }
+        }
+
+        public SendCommand SENDCommand
+        {
+            get { return mySendCommand; }
+            set
+            {
+                mySendCommand = value;
+            }
+        }
+
+        public ResetCommand ResetCommand
+        {
+            get { return myResetCommand; }
+            set { myResetCommand = value; }
+        }
 
         public bool Button_Send_State
         {
@@ -30,8 +76,6 @@ namespace WPF_Chat_ver1.ViewModel
             }
         }
 
-        private bool mytextBox_Message_State;
-
         public bool TextBox_Message_State
         {
             get { return mytextBox_Message_State; }
@@ -39,11 +83,8 @@ namespace WPF_Chat_ver1.ViewModel
             {
                 mytextBox_Message_State = value;
                 OnPropertyChanged("TextBox_Message_State");
-                
             }
         }
-
-        private bool mytextbox_FrensIP_State=true;
 
         public bool Textbox_FrensIP_State
         {
@@ -52,11 +93,18 @@ namespace WPF_Chat_ver1.ViewModel
             {
                 mytextbox_FrensIP_State = value;
                 OnPropertyChanged("Textbox_FrensIP_State");
-                
             }
         }
 
-        private bool mybutton_Start_State=true;
+        public string FrensIPText
+        {
+            get { return myFrensIPText; }
+            set
+            {
+                myFrensIPText = value;
+                OnPropertyChanged(FrensIPText);
+            }
+        }
 
         public bool Button_Start_State
         {
@@ -65,11 +113,8 @@ namespace WPF_Chat_ver1.ViewModel
             {
                 mybutton_Start_State = value;
                 OnPropertyChanged("Button_Start_State");
-                
             }
         }
-
-        private string myServerMessage_Content="Server Stopped";
 
         public string ServerMessage_Content
         {
@@ -81,8 +126,6 @@ namespace WPF_Chat_ver1.ViewModel
             }
         }
 
-        private Brush myServerMessage_Foreground=Brushes.DarkRed;
-
         public Brush ServerMessage_Foreground
         {
             get { return myServerMessage_Foreground; }
@@ -90,11 +133,8 @@ namespace WPF_Chat_ver1.ViewModel
             {
                 myServerMessage_Foreground = value;
                 OnPropertyChanged("ServerMessage_Foreground");
-                
             }
         }
-
-        private bool mybutton_Reset_State;
 
         public bool Button_Reset_State
         {
@@ -103,44 +143,8 @@ namespace WPF_Chat_ver1.ViewModel
             {
                 mybutton_Reset_State = value;
                 OnPropertyChanged("Button_Reset_State");
-                
             }
         }
-
-        private StartCommand myStartCommand;
-
-        public StartCommand STARTCommand
-        {
-            get { return myStartCommand; }
-            set
-            {
-                myStartCommand = value;
-                
-
-            }
-        }
-
-        private SendCommand mySendCommand;
-
-        public SendCommand SENDCommand
-        {
-            get { return mySendCommand; }
-            set
-            {
-                mySendCommand = value;
-                
-            }
-        }
-
-        private ResetCommand myResetCommand;
-
-        public ResetCommand ResetCommand
-        {
-            get { return myResetCommand; }
-            set { myResetCommand = value; }
-        }
-
-        private ObservableCollection<string> myMsgs;
 
         public ObservableCollection<string> MyMessages
         {
@@ -151,7 +155,6 @@ namespace WPF_Chat_ver1.ViewModel
                 OnPropertyChanged("MyMessages");
             }
         }
-        
 
         public ChatViewModel()
         {
@@ -171,11 +174,20 @@ namespace WPF_Chat_ver1.ViewModel
 
             ChatModel.INSTANCE.MessageReceived += (sender, args) => { MyMessages = ChatModel.INSTANCE.MESSAGERECIEVED; };
             ChatModel.INSTANCE.MessageSend += (sender, args) => { MyMessages = ChatModel.INSTANCE.MESSAGESEND; };
-
-            
+            myResetCommand=new ResetCommand();
+            myResetCommand.RESETRequested += (sender, args) =>
+            {
+                Button_Send_State = false;
+                TextBox_Message_State = false;
+                Textbox_FrensIP_State = true;
+                Button_Start_State = true;
+                ServerMessage_Foreground = Brushes.DarkRed;
+                Button_Reset_State = false;
+                ServerMessage_Content = "Server Stopped";
+                FrensIPText = string.Empty;
+                MyMessages=new ObservableCollection<string>();
+            };
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged(string propertyName)
@@ -183,5 +195,7 @@ namespace WPF_Chat_ver1.ViewModel
             PropertyChangedEventHandler handler = PropertyChanged;
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

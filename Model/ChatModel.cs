@@ -6,23 +6,14 @@ namespace WPF_Chat_ver1.Model
     internal class ChatModel
     {
         private static volatile ChatModel Instance;
+        private ObservableCollection<string> myMessageRecieved;
+        private ObservableCollection<string> myMessageSend;
 
         public static ChatModel INSTANCE
         {
-
-            get
-            {
-                if (Instance == null)
-                {
-                      Instance = new ChatModel();
-                }
-
-                return Instance;
-            }
+            get { return Instance ?? (Instance = new ChatModel()); }
         }
 
-        public event EventHandler MessageReceived;
-        private ObservableCollection<string> myMessageRecieved;
         public ObservableCollection<string> MESSAGERECIEVED
         {
             get { return myMessageRecieved; }
@@ -36,8 +27,6 @@ namespace WPF_Chat_ver1.Model
             }
         }
 
-        public event EventHandler MessageSend;
-        private ObservableCollection<string> myMessageSend;
         public ObservableCollection<string> MESSAGESEND
         {
             get { return myMessageSend; }
@@ -50,5 +39,9 @@ namespace WPF_Chat_ver1.Model
                 }
             }
         }
+
+        public event EventHandler MessageReceived;
+
+        public event EventHandler MessageSend;
     }
 }
