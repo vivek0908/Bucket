@@ -15,11 +15,11 @@ namespace WPF_Chat_ver1.Utility
         private static object syncRoot = new Object();
         private static EndPoint myEndPoint, myEndPointRemote;
 
-        private static Socket myCommunication;
+        private Socket myCommunication;
 
-        internal static Socket ChatCommunication 
+        internal Socket ChatCommunication 
         {
-            get { return SetupSocket(); }
+            get { return myCommunication; }
             set { myCommunication = value; }
         }
 
@@ -46,7 +46,7 @@ namespace WPF_Chat_ver1.Utility
             myCommunication = SetupSocket();
         }
 
-        internal static void startCommunication(string frenip)
+        internal void startCommunication(string frenip)
         {
             try
             {
@@ -86,7 +86,7 @@ namespace WPF_Chat_ver1.Utility
         }
 
         // return the own ip
-        internal static string GetLocalIP()
+        internal string GetLocalIP()
         {
             IPHostEntry host;
             host = Dns.GetHostEntry(Dns.GetHostName());
@@ -100,7 +100,7 @@ namespace WPF_Chat_ver1.Utility
             return "127.0.0.1";
         }
 
-        public static void OperatorCallBack(IAsyncResult ar)
+        public void OperatorCallBack(IAsyncResult ar)
         {
             try
             {
@@ -139,7 +139,7 @@ namespace WPF_Chat_ver1.Utility
             }
         }
 
-        private static Socket SetupSocket()
+        private Socket SetupSocket()
         {
             // set up socket
             myCommunication = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);

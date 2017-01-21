@@ -42,7 +42,7 @@ namespace WPF_Chat_ver1.Command
             byte[] msg = enc.GetBytes(testmsg);
 
             // sending the message
-            ChatConnection.ChatCommunication.Send(msg);
+            ChatConnection.Instance.ChatCommunication.Send(msg);
            ChatModel.MyMessage= ("You : "+ msg);
 
             //Dispatcher.Invoke(new Action(() =>

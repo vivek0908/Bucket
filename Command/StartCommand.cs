@@ -16,7 +16,7 @@ namespace WPF_Chat_ver1.Command
     {
         public void Execute(object frenIP)
         {
-            ChatConnection.startCommunication(frenIP.ToString());
+            ChatConnection.Instance.startCommunication(frenIP.ToString());
         }
 
         public bool CanExecute(object parameter)

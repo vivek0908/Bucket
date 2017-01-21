@@ -125,7 +125,7 @@ namespace WPF_Chat_ver1.ViewModel
 
         public ChatViewModel()
         {
-            myHostIP = ChatConnection.GetLocalIP();
+            myHostIP = ChatConnection.Instance.GetLocalIP();
             mySendCommand = new SendCommand();
             myStartCommand=new StartCommand();
         }
