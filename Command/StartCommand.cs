@@ -18,8 +18,12 @@ namespace WPF_Chat_ver1.Command
         
         public StartCommand()
         {
+
             //loaded sssfly
             
+
+            // am i in master
+
                 
         }
 
