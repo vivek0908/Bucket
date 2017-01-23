@@ -1,20 +1,47 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Collections.ObjectModel;
 
 namespace WPF_Chat_ver1.Model
 {
-    internal static class ChatModel
+    internal class ChatModel
     {
-        private static string myMsg;
+        private static volatile ChatModel Instance;
+        private ObservableCollection<string> myMessageRecieved;
+        private ObservableCollection<string> myMessageSend;
 
-        public static string MyMessage
+        public static ChatModel INSTANCE
         {
-            get { return myMsg; }
-            set { myMsg = value; }
+            get { return Instance ?? (Instance = new ChatModel()); }
         }
-        
-        
+
+        public ObservableCollection<string> MESSAGERECIEVED
+        {
+            get { return myMessageRecieved; }
+            set
+            {
+                myMessageRecieved = value;
+                if (MessageReceived != null)
+                {
+                    MessageReceived(this,EventArgs.Empty);
+                }
+            }
+        }
+
+        public ObservableCollection<string> MESSAGESEND
+        {
+            get { return myMessageSend; }
+            set
+            {
+                myMessageSend = value;
+                if (MessageSend != null)
+                {
+                    MessageSend(this, EventArgs.Empty);
+                }
+            }
+        }
+
+        public event EventHandler MessageReceived;
+
+        public event EventHandler MessageSend;
     }
 }

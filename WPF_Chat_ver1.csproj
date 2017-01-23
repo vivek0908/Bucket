@@ -67,7 +67,8 @@
     <Compile Include="Command\ResetCommand.cs" />
     <Compile Include="Command\StartCommand.cs" />
     <Compile Include="Model\ChatModel.cs" />
-    <Compile Include="Utility\Connection.cs" />
+    <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Communication\Connection.cs" />
     <Compile Include="ViewModel\ChatViewModel.cs" />
     <Compile Include="View\WindowChat.xaml.cs">
       <DependentUpon>WindowChat.xaml</DependentUpon>

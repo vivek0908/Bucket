@@ -1,30 +1,38 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Sockets;
+using System.Collections.ObjectModel;
 using System.Text;
 using System.Windows.Input;
-using System.Windows.Threading;
+using WPF_Chat_ver1.Communication;
 using WPF_Chat_ver1.Model;
-using WPF_Chat_ver1.Utility;
 
 namespace WPF_Chat_ver1.Command
 {
     internal class SendCommand:ICommand
     {
-        private ChatConnection myConnection;
-        private string myTextMessage;
+        private ChatModel myChatModel;
 
         public SendCommand()
         {
-            
-           // myTextMessage = textMessage;
+            myChatModel = ChatModel.INSTANCE;
         }
 
-        public void Execute(object parameter)
+        public void Execute(object textBoxMessage)
         {
-            myTextMessage = parameter.ToString();
-            SendMessage();
+            SendMessage(textBoxMessage.ToString());
+        }
+
+        private void SendMessage(string message)
+        {
+            // converts from string to byte[]
+            var testmsg = message;
+            var enc = new ASCIIEncoding();
+            byte[] msg = enc.GetBytes(testmsg);
+
+            // sending the message
+            ChatConnection.Instance.ChatCommunication.Send(msg);
+            ObservableCollection<string> msgs=new ObservableCollection<string>();
+            msgs.Add(("You : " + testmsg));
+            myChatModel.MESSAGESEND = msgs;
         }
 
         public bool CanExecute(object parameter)
@@ -33,25 +41,5 @@ namespace WPF_Chat_ver1.Command
         }
 
         public event EventHandler CanExecuteChanged;
-
-        private void SendMessage()
-        {
-            // converts from string to byte[]
-            var testmsg = myTextMessage + "*";
-            var enc = new ASCIIEncoding();
-            byte[] msg = enc.GetBytes(testmsg);
-
-            // sending the message
-            ChatConnection.ChatCommunication.Send(msg);
-           ChatModel.MyMessage= ("You : "+ msg);
-
-            //Dispatcher.Invoke(new Action(() =>
-            //{
-                // add to listbox
-                //listBox1.Items.Add("You: " + myTextMessage);
-
-            //}), DispatcherPriority.SystemIdle, null);
-
-        }
     }
 }
