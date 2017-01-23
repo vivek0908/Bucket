@@ -18,20 +18,31 @@ namespace WPF_Chat_ver1.Command
 
         public void Execute(object textBoxMessage)
         {
-            SendMessage(textBoxMessage.ToString());
+            var allMessages = (Tuple<string, ObservableCollection<string>>)textBoxMessage;
+            string newMessage = allMessages.Item1;
+            var oldMessage = allMessages.Item2;
+            SendMessage(newMessage, oldMessage);
         }
 
-        private void SendMessage(string message)
+        private void SendMessage(string newMessage, ObservableCollection<string> oldMessages)
         {
             // converts from string to byte[]
-            var testmsg = message;
+            var testmsg = newMessage;
             var enc = new ASCIIEncoding();
-            byte[] msg = enc.GetBytes(testmsg);
+            byte[] msg = enc.GetBytes(testmsg+'*');
 
+            
+            var msgs = new ObservableCollection<string>();
+            msgs.Add(("You : " + testmsg));
+            if (oldMessages != null)
+            {
+                foreach (var messages in oldMessages)
+                {
+                    msgs.Add(messages);
+                }
+            }
             // sending the message
             ChatConnection.Instance.ChatCommunication.Send(msg);
-            ObservableCollection<string> msgs=new ObservableCollection<string>();
-            msgs.Add(("You : " + testmsg));
             myChatModel.MESSAGESEND = msgs;
         }
 

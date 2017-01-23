@@ -66,6 +66,7 @@
     <Compile Include="Command\SendCommand.cs" />
     <Compile Include="Command\ResetCommand.cs" />
     <Compile Include="Command\StartCommand.cs" />
+    <Compile Include="Converters\MessageConverter.cs" />
     <Compile Include="Model\ChatModel.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Communication\Connection.cs" />
