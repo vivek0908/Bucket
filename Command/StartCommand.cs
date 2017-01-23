@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 using WPF_Chat_ver1.Communication;
 
@@ -6,9 +7,9 @@ namespace WPF_Chat_ver1.Command
 {
     class StartCommand : ICommand
     {
-        public void Execute(object frenIP)
+        public void Execute(object frenip)
         {
-            ChatConnection.Instance.startCommunication(frenIP.ToString());
+            ChatConnection.Instance.startCommunication(frenip.ToString());
             if (CommunicationStarted != null)
             {
                 CommunicationStarted(this, EventArgs.Empty);
