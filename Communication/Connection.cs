@@ -49,6 +49,7 @@ namespace WPF_Chat_ver1.Communication
         {
             try
             {
+
                 // bind socket                        
                 myEndPoint = new IPEndPoint(IPAddress.Parse(GetLocalIP()), 8435);
                 ChatCommunication.Bind(myEndPoint);
@@ -60,7 +61,7 @@ namespace WPF_Chat_ver1.Communication
                 // starts to listen to an specific port
                 byte[] buffer = new byte[1464];
                 ChatCommunication.BeginReceiveFrom(buffer, 0, buffer.Length, SocketFlags.None,
-                    ref myEndPointRemote, new AsyncCallback(OperatorCallBack), buffer);
+                    ref myEndPointRemote, new AsyncCallback(OperatorCallBack),buffer);
             }
             catch (SocketException ex)
             {
@@ -117,7 +118,7 @@ namespace WPF_Chat_ver1.Communication
                     var fullmessage = msg.Split('*');
 
                     var msgs = new ObservableCollection<string>();
-                    msgs.Add("Friend: " + fullmessage[0].ToString().Trim());
+                    msgs.Add("Friend: " + fullmessage[0].Trim());
                     myChatModel.MESSAGERECIEVED = msgs;
                 }
 
