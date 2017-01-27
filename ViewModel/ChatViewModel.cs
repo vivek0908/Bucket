@@ -9,7 +9,7 @@ using WPF_Chat_ver1.Model;
 
 namespace WPF_Chat_ver1.ViewModel
 {
-    internal class ChatViewModel:INotifyPropertyChanged
+    internal class ChatViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -21,13 +21,13 @@ namespace WPF_Chat_ver1.ViewModel
 
         private bool mytextBox_Message_State;
 
-        private bool mytextbox_FrensIP_State=true;
+        private bool mytextbox_FrensIP_State = true;
 
-        private bool mybutton_Start_State=true;
+        private bool mybutton_Start_State = true;
 
-        private string myServerMessage_Content="Server Stopped";
+        private string myServerMessage_Content = "Server Stopped";
 
-        private Brush myServerMessage_Foreground=Brushes.DarkRed;
+        private Brush myServerMessage_Foreground = Brushes.DarkRed;
 
         private bool mybutton_Reset_State;
 
@@ -50,19 +50,13 @@ namespace WPF_Chat_ver1.ViewModel
         public StartCommand STARTCommand
         {
             get { return myStartCommand; }
-            set
-            {
-                myStartCommand = value;
-            }
+            set { myStartCommand = value; }
         }
 
         public SendCommand SENDCommand
         {
             get { return mySendCommand; }
-            set
-            {
-                mySendCommand = value;
-            }
+            set { mySendCommand = value; }
         }
 
         public ResetCommand ResetCommand
@@ -136,7 +130,7 @@ namespace WPF_Chat_ver1.ViewModel
             get { return myServerMessage_Content; }
             set
             {
-                myServerMessage_Content = value; 
+                myServerMessage_Content = value;
                 OnPropertyChanged("ServerMessage_Content");
             }
         }
@@ -171,41 +165,52 @@ namespace WPF_Chat_ver1.ViewModel
             }
         }
 
-        public ChatViewModel()
+        internal ChatViewModel()
         {
             myHostIP = ChatConnection.Instance.GetLocalIP();
             mySendCommand = new SendCommand();
-            myStartCommand=new StartCommand();
+            myStartCommand = new StartCommand();
             myStartCommand.CommunicationStarted += (sender, args) =>
             {
-                Button_Send_State = true;
-                TextBox_Message_State = true;
-                Textbox_FrensIP_State = false;
-                Button_Start_State = false;
-                ServerMessage_Foreground = Brushes.ForestGreen;
-                Button_Reset_State = true;
-                ServerMessage_Content = "Server Started";
-                MyMessages = string.Empty;
-                mytextBox_Message_Text = string.Empty;
+                InitializeOnServerStart();
             };
 
-            ChatModel.INSTANCE.MessageIsUpdated += (sender, args) => { MyMessages = ChatModel.INSTANCE.UpdatedMessageText; };
-            ChatModel.INSTANCE.MessageIsSend+=(sender,args)=> { TextBox_Message_Text = string.Empty; };
-            myResetCommand=new ResetCommand();
+            ChatModel.INSTANCE.MessageIsUpdated +=
+                (sender, args) => { MyMessages = ChatModel.INSTANCE.UpdatedMessageText; };
+            ChatModel.INSTANCE.MessageIsSend += (sender, args) => { TextBox_Message_Text = string.Empty; };
+            myResetCommand = new ResetCommand();
             myResetCommand.RESETRequested += (sender, args) =>
             {
-                Button_Send_State = false;
-                TextBox_Message_State = false;
-                Textbox_FrensIP_State = true;
-                Button_Start_State = true;
-                ServerMessage_Foreground = Brushes.DarkRed;
-                Button_Reset_State = false;
-                ServerMessage_Content = "Server Stopped";
-                FrensIPText = string.Empty;
-                MyMessages = string.Empty;
-                TextBox_Message_Text = string.Empty;
-                ChatModel.INSTANCE.UpdatedMessageText = string.Empty;
+                Reset();
             };
+        }
+
+        private void InitializeOnServerStart()
+        {
+            Button_Send_State = true;
+            TextBox_Message_State = true;
+            Textbox_FrensIP_State = false;
+            Button_Start_State = false;
+            ServerMessage_Foreground = Brushes.ForestGreen;
+            Button_Reset_State = true;
+            ServerMessage_Content = "Server Started";
+            MyMessages = string.Empty;
+            mytextBox_Message_Text = string.Empty;
+        }
+
+        private void Reset()
+        {
+            Button_Send_State = false;
+            TextBox_Message_State = false;
+            Textbox_FrensIP_State = true;
+            Button_Start_State = true;
+            ServerMessage_Foreground = Brushes.DarkRed;
+            Button_Reset_State = false;
+            ServerMessage_Content = "Server Stopped";
+            FrensIPText = string.Empty;
+            MyMessages = string.Empty;
+            TextBox_Message_Text = string.Empty;
+            ChatModel.INSTANCE.UpdatedMessageText = string.Empty;
         }
 
         private void OnPropertyChanged(string propertyName)
@@ -213,7 +218,5 @@ namespace WPF_Chat_ver1.ViewModel
             PropertyChangedEventHandler handler = PropertyChanged;
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
-
-        
     }
 }
