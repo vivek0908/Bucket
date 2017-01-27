@@ -1,15 +1,17 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Windows.Input;
 using WPF_Chat_ver1.Communication;
 
 namespace WPF_Chat_ver1.Command
 {
-    class StartCommand : ICommand
+    public class StartCommand : ICommand
     {
+        public event EventHandler CommunicationStarted;
+
+        public event EventHandler CanExecuteChanged;
         public void Execute(object frenip)
         {
-            ChatConnection.Instance.startCommunication(frenip.ToString());
+            ChatConnection.Instance.StartCommunication(frenip.ToString());
             if (CommunicationStarted != null)
             {
                 CommunicationStarted(this, EventArgs.Empty);
@@ -20,9 +22,5 @@ namespace WPF_Chat_ver1.Command
         {
             return true;
         }
-
-        public event EventHandler CommunicationStarted;
-
-        public event EventHandler CanExecuteChanged;
     }
 }

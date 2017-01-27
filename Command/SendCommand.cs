@@ -1,13 +1,13 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Text;
 using System.Windows.Input;
+using System.Windows.Threading;
 using WPF_Chat_ver1.Communication;
 using WPF_Chat_ver1.Model;
 
 namespace WPF_Chat_ver1.Command
 {
-    internal class SendCommand:ICommand
+    public class SendCommand:ICommand
     {
         private ChatModel myChatModel;
 
@@ -18,32 +18,8 @@ namespace WPF_Chat_ver1.Command
 
         public void Execute(object textBoxMessage)
         {
-            var allMessages = (Tuple<string, ObservableCollection<string>>)textBoxMessage;
-            string newMessage = allMessages.Item1;
-            var oldMessage = allMessages.Item2;
-            SendMessage(newMessage, oldMessage);
-        }
-
-        private void SendMessage(string newMessage, ObservableCollection<string> oldMessages)
-        {
-            // converts from string to byte[]
-            var testmsg = newMessage;
-            var enc = new ASCIIEncoding();
-            byte[] msg = enc.GetBytes(testmsg+'*');
-
-            
-            var msgs = new ObservableCollection<string>();
-            msgs.Add(("You : " + testmsg));
-            if (oldMessages != null)
-            {
-                foreach (var messages in oldMessages)
-                {
-                    msgs.Add(messages);
-                }
-            }
-            // sending the message
-            ChatConnection.Instance.ChatCommunication.Send(msg);
-            myChatModel.MESSAGESEND = msgs;
+            string newMessage = textBoxMessage.ToString();
+            SendMessage(newMessage);
         }
 
         public bool CanExecute(object parameter)
@@ -52,5 +28,23 @@ namespace WPF_Chat_ver1.Command
         }
 
         public event EventHandler CanExecuteChanged;
+
+        private void SendMessage(string newMessage)
+        {
+            // converts from string to byte[]
+            var testmsg = newMessage;
+            var enc = new ASCIIEncoding();
+            byte[] msg = enc.GetBytes(testmsg + '*');
+
+            Dispatcher.CurrentDispatcher.Invoke(new Action(() =>
+            {
+                // add to TextBlock
+                myChatModel.UpdatedMessageText += "You : " + testmsg + "\n";
+
+            }), DispatcherPriority.SystemIdle, null);
+            ChatConnection.Instance.ChatCommunication.Send(msg);
+        }
+
+        
     }
 }
