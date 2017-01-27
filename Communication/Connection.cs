@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Windows;
+using System.Windows.Threading;
 using WPF_Chat_ver1.Model;
 
 namespace WPF_Chat_ver1.Communication
@@ -117,9 +118,15 @@ namespace WPF_Chat_ver1.Communication
 
                     var fullmessage = msg.Split('*');
 
-                    var msgs = new ObservableCollection<string>();
-                    msgs.Add("Friend: " + fullmessage[0].Trim());
-                    myChatModel.MESSAGERECIEVED = msgs;
+                    //var msgs = new ObservableCollection<string>();
+                    //msgs.Add("Friend: " + fullmessage[0].Trim());
+                    Dispatcher.CurrentDispatcher.Invoke(new Action(() =>
+                    {
+                        // add to listbox
+                        myChatModel.UpdatedMessageText1 +="Friend: " + fullmessage[0].Trim()+"\n";
+                        //myChatModel.UpdatedMessageText = myChatModel.UpdatedMessageText;
+
+                    }), DispatcherPriority.SystemIdle, null);
                 }
 
                 // starts to listen again

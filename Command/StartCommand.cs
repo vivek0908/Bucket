@@ -5,7 +5,7 @@ using WPF_Chat_ver1.Communication;
 
 namespace WPF_Chat_ver1.Command
 {
-    class StartCommand : ICommand
+    public class StartCommand : ICommand
     {
         public void Execute(object frenip)
         {

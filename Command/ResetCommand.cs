@@ -5,7 +5,7 @@ using WPF_Chat_ver1.Communication;
 
 namespace WPF_Chat_ver1.Command
 {
-    internal class ResetCommand : ICommand
+    public class ResetCommand : ICommand
     {
         /// <see cref="ICommand.Execute"/>
         public void Execute([NotNull] object parameter)

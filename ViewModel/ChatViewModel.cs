@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Media;
 using WPF_Chat_ver1.Annotations;
@@ -8,7 +9,7 @@ using WPF_Chat_ver1.Model;
 
 namespace WPF_Chat_ver1.ViewModel
 {
-    internal class ChatViewModel:INotifyPropertyChanged
+    public class ChatViewModel:INotifyPropertyChanged
     {
         private string myHostIP;
 
@@ -32,7 +33,7 @@ namespace WPF_Chat_ver1.ViewModel
 
         private ResetCommand myResetCommand;
 
-        private ObservableCollection<string> myMsgs;
+        private IList<string> myMsgs;
 
         public string MyIP
         {
@@ -146,13 +147,23 @@ namespace WPF_Chat_ver1.ViewModel
             }
         }
 
-        public ObservableCollection<string> MyMessages
+        //public IList<string> MyMessages
+        //{
+        //    get { return myMsgs; }
+        //    set
+        //    {
+        //        myMsgs = value;
+        //        OnPropertyChanged("MyMessages");
+        //    }
+        //}
+
+        public string MyMessages1
         {
-            get { return myMsgs; }
+            get { return myMsgs1; }
             set
             {
-                myMsgs = value;
-                OnPropertyChanged("MyMessages");
+                myMsgs1 = value;
+                OnPropertyChanged("MyMessages1");
             }
         }
 
@@ -170,10 +181,14 @@ namespace WPF_Chat_ver1.ViewModel
                 ServerMessage_Foreground = Brushes.ForestGreen;
                 Button_Reset_State = true;
                 ServerMessage_Content = "Server Started";
+                MyMessages1 = "";
+                //MyMessages = new List<string>();
+
             };
 
-            ChatModel.INSTANCE.MessageReceived += (sender, args) => { MyMessages = ChatModel.INSTANCE.MESSAGERECIEVED; };
-            ChatModel.INSTANCE.MessageSend += (sender, args) => { MyMessages = ChatModel.INSTANCE.MESSAGESEND; };
+            //ChatModel.INSTANCE.MessageReceived += (sender, args) => { MyMessages = ChatModel.INSTANCE.MESSAGEUPDATED; };
+            //ChatModel.INSTANCE.MessageSend += (sender, args) => { MyMessages = ChatModel.INSTANCE.MESSAGESEND; };
+            ChatModel.INSTANCE.MessageIsUpdated += (sender, args) => { MyMessages1 = ChatModel.INSTANCE.UpdatedMessageText1; };
             myResetCommand=new ResetCommand();
             myResetCommand.RESETRequested += (sender, args) =>
             {
@@ -185,17 +200,19 @@ namespace WPF_Chat_ver1.ViewModel
                 Button_Reset_State = false;
                 ServerMessage_Content = "Server Stopped";
                 FrensIPText = string.Empty;
-                MyMessages=new ObservableCollection<string>();
+                //MyMessages=new List<string>();
+                MyMessages1 = "";
             };
         }
 
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged(string propertyName)
+        //[NotifyPropertyChangedInvocator]
+        private void OnPropertyChanged(string propertyName)
         {
             PropertyChangedEventHandler handler = PropertyChanged;
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+        private string myMsgs1;
     }
 }
