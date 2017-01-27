@@ -9,8 +9,12 @@ using WPF_Chat_ver1.Model;
 
 namespace WPF_Chat_ver1.ViewModel
 {
-    public class ChatViewModel:INotifyPropertyChanged
+    internal class ChatViewModel:INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private string myFrensIPText;
+
         private string myHostIP;
 
         private bool myButton_Send_State;
@@ -33,7 +37,9 @@ namespace WPF_Chat_ver1.ViewModel
 
         private ResetCommand myResetCommand;
 
-        private IList<string> myMsgs;
+        private string myMsgs;
+
+        private string mytextBox_Message_Text;
 
         public string MyIP
         {
@@ -85,6 +91,16 @@ namespace WPF_Chat_ver1.ViewModel
             }
         }
 
+        public string TextBox_Message_Text
+        {
+            get { return mytextBox_Message_Text; }
+            set
+            {
+                mytextBox_Message_Text = value;
+                OnPropertyChanged("TextBox_Message_Text");
+            }
+        }
+
         public bool Textbox_FrensIP_State
         {
             get { return mytextbox_FrensIP_State; }
@@ -94,8 +110,6 @@ namespace WPF_Chat_ver1.ViewModel
                 OnPropertyChanged("Textbox_FrensIP_State");
             }
         }
-
-        private string myFrensIPText;
 
         public string FrensIPText
         {
@@ -147,23 +161,13 @@ namespace WPF_Chat_ver1.ViewModel
             }
         }
 
-        //public IList<string> MyMessages
-        //{
-        //    get { return myMsgs; }
-        //    set
-        //    {
-        //        myMsgs = value;
-        //        OnPropertyChanged("MyMessages");
-        //    }
-        //}
-
-        public string MyMessages1
+        public string MyMessages
         {
-            get { return myMsgs1; }
+            get { return myMsgs; }
             set
             {
-                myMsgs1 = value;
-                OnPropertyChanged("MyMessages1");
+                myMsgs = value;
+                OnPropertyChanged("MyMessages");
             }
         }
 
@@ -181,14 +185,12 @@ namespace WPF_Chat_ver1.ViewModel
                 ServerMessage_Foreground = Brushes.ForestGreen;
                 Button_Reset_State = true;
                 ServerMessage_Content = "Server Started";
-                MyMessages1 = "";
-                //MyMessages = new List<string>();
-
+                MyMessages = string.Empty;
+                mytextBox_Message_Text = string.Empty;
             };
 
-            //ChatModel.INSTANCE.MessageReceived += (sender, args) => { MyMessages = ChatModel.INSTANCE.MESSAGEUPDATED; };
-            //ChatModel.INSTANCE.MessageSend += (sender, args) => { MyMessages = ChatModel.INSTANCE.MESSAGESEND; };
-            ChatModel.INSTANCE.MessageIsUpdated += (sender, args) => { MyMessages1 = ChatModel.INSTANCE.UpdatedMessageText1; };
+            ChatModel.INSTANCE.MessageIsUpdated += (sender, args) => { MyMessages = ChatModel.INSTANCE.UpdatedMessageText; };
+            ChatModel.INSTANCE.MessageIsSend+=(sender,args)=> { TextBox_Message_Text = string.Empty; };
             myResetCommand=new ResetCommand();
             myResetCommand.RESETRequested += (sender, args) =>
             {
@@ -200,19 +202,18 @@ namespace WPF_Chat_ver1.ViewModel
                 Button_Reset_State = false;
                 ServerMessage_Content = "Server Stopped";
                 FrensIPText = string.Empty;
-                //MyMessages=new List<string>();
-                MyMessages1 = "";
+                MyMessages = string.Empty;
+                TextBox_Message_Text = string.Empty;
+                ChatModel.INSTANCE.UpdatedMessageText = string.Empty;
             };
         }
 
-        //[NotifyPropertyChangedInvocator]
         private void OnPropertyChanged(string propertyName)
         {
             PropertyChangedEventHandler handler = PropertyChanged;
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        private string myMsgs1;
+        
     }
 }
