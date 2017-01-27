@@ -30,8 +30,7 @@ namespace WPF_Chat_ver1.Communication
                 {
                     lock (syncRoot)
                     {
-                        if (instance == null)
-                            instance = new ChatConnection();
+                        instance = new ChatConnection();
                     }
                 }
                 return instance;
@@ -143,7 +142,7 @@ namespace WPF_Chat_ver1.Communication
             return myCommunication;
         }
 
-        public void Detach()
+        internal void Detach()
         {
             Instance = null;
         }
