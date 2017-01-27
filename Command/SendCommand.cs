@@ -7,7 +7,7 @@ using WPF_Chat_ver1.Model;
 
 namespace WPF_Chat_ver1.Command
 {
-    public class SendCommand:ICommand
+    public class SendCommand : ICommand
     {
         private ChatModel myChatModel;
 
@@ -31,10 +31,16 @@ namespace WPF_Chat_ver1.Command
 
         private void SendMessage(string newMessage)
         {
+            if (newMessage.Equals(""))
+            {
+                return;
+            }
+
             // converts from string to byte[]
             var testmsg = newMessage;
             var enc = new ASCIIEncoding();
             byte[] msg = enc.GetBytes(testmsg + '*');
+            ChatConnection.Instance.ChatCommunication.Send(msg);
 
             Dispatcher.CurrentDispatcher.Invoke(new Action(() =>
             {
@@ -42,9 +48,6 @@ namespace WPF_Chat_ver1.Command
                 myChatModel.UpdatedMessageText += "You : " + testmsg + "\n";
 
             }), DispatcherPriority.SystemIdle, null);
-            ChatConnection.Instance.ChatCommunication.Send(msg);
         }
-
-        
     }
 }
