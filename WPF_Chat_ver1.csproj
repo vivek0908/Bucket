@@ -55,7 +55,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="View\WindowChat.xaml">
+    <Page Include="View\ChatView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -71,8 +71,8 @@
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Communication\Connection.cs" />
     <Compile Include="ViewModel\ChatViewModel.cs" />
-    <Compile Include="View\WindowChat.xaml.cs">
-      <DependentUpon>WindowChat.xaml</DependentUpon>
+    <Compile Include="View\ChatView.xaml.cs">
+      <DependentUpon>ChatView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

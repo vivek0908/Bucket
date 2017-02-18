@@ -1,19 +1,21 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Windows;
+using System.Windows.Threading;
 using WPF_Chat_ver1.Model;
 
 namespace WPF_Chat_ver1.Communication
 {
     internal class ChatConnection
     {
+        public event EventHandler CommunicationStarted;
+
         private static volatile ChatConnection instance;
         private static readonly object syncRoot = new Object();
         private static EndPoint myEndPoint, myEndPointRemote;
-        private readonly ChatModel myChatModel;
+        private ChatModel myChatModel;
         private Socket myCommunication;
 
         internal Socket ChatCommunication 
@@ -30,26 +32,24 @@ namespace WPF_Chat_ver1.Communication
                 {
                     lock (syncRoot)
                     {
-                        if (instance == null)
-                            instance = new ChatConnection();
+                        instance = new ChatConnection();
                     }
                 }
                 return instance;
             }
-            
+            private set { instance = value; }
         }
 
-        public ChatConnection()
+        internal ChatConnection()
         {
-            myCommunication = SetupSocket();
+            ChatCommunication = SetupSocket();
             myChatModel = ChatModel.INSTANCE;
         }
 
-        internal void startCommunication(string frenip)
+        internal void StartCommunication(string frenip)
         {
             try
             {
-
                 // bind socket                        
                 myEndPoint = new IPEndPoint(IPAddress.Parse(GetLocalIP()), 8435);
                 ChatCommunication.Bind(myEndPoint);
@@ -62,6 +62,11 @@ namespace WPF_Chat_ver1.Communication
                 byte[] buffer = new byte[1464];
                 ChatCommunication.BeginReceiveFrom(buffer, 0, buffer.Length, SocketFlags.None,
                     ref myEndPointRemote, new AsyncCallback(OperatorCallBack),buffer);
+
+                if (CommunicationStarted != null)
+                {
+                    CommunicationStarted(this, EventArgs.Empty);
+                }
             }
             catch (SocketException ex)
             {
@@ -100,7 +105,7 @@ namespace WPF_Chat_ver1.Communication
             return "127.0.0.1";
         }
 
-        public void OperatorCallBack(IAsyncResult ar)
+        internal void OperatorCallBack(IAsyncResult ar)
         {
             try
             {
@@ -117,9 +122,12 @@ namespace WPF_Chat_ver1.Communication
 
                     var fullmessage = msg.Split('*');
 
-                    var msgs = new ObservableCollection<string>();
-                    msgs.Add("Friend: " + fullmessage[0].Trim());
-                    myChatModel.MESSAGERECIEVED = msgs;
+                    Dispatcher.CurrentDispatcher.Invoke(new Action(() =>
+                    {
+                        // add to listbox
+                        myChatModel.UpdatedMessageText +="Friend: " + fullmessage[0].Trim()+"\n";
+
+                    }), DispatcherPriority.SystemIdle, null);
                 }
 
                 // starts to listen again
@@ -139,6 +147,11 @@ namespace WPF_Chat_ver1.Communication
             myCommunication = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
             myCommunication.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
             return myCommunication;
+        }
+
+        internal void Detach()
+        {
+            Instance = null;
         }
     }
 }

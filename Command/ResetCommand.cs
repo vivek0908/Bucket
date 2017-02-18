@@ -5,12 +5,16 @@ using WPF_Chat_ver1.Communication;
 
 namespace WPF_Chat_ver1.Command
 {
-    internal class ResetCommand : ICommand
+    public class ResetCommand : ICommand
     {
+        public event EventHandler RESETRequested;
+
+        public event EventHandler CanExecuteChanged;
+
         /// <see cref="ICommand.Execute"/>
         public void Execute([NotNull] object parameter)
         {
-            ChatConnection.Instance.SetupSocket();
+            ChatConnection.Instance.Detach();
             if (RESETRequested != null)
             {
                 RESETRequested(this, EventArgs.Empty);
@@ -22,9 +26,5 @@ namespace WPF_Chat_ver1.Command
         {
             return true;
         }
-
-        public event EventHandler RESETRequested;
-
-        public event EventHandler CanExecuteChanged;
     }
 }
