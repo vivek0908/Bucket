@@ -1,15 +1,16 @@
 ﻿<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:WPF_Chat_ver1.ViewModel"
-	x:Class="WPF_Chat_ver1.View.Window1"
+        xmlns:con="clr-namespace:WPF_Chat_ver1.Converters"
+	x:Class="WPF_Chat_ver1.View.ChatView"
 	x:Name="WindowChat"
 	Title="Chat"
 	Width="818.806" Height="725" ResizeMode="NoResize" Background="White" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d">
 
     <Window.Resources>
-
+        <con:MessageConverter x:Key="MessageConverter" />
     </Window.Resources>
-    
+
     <Window.DataContext>
         <vm:ChatViewModel></vm:ChatViewModel>
     </Window.DataContext>
@@ -19,7 +20,7 @@
             <ColumnDefinition Width="0*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <ListBox Background="NavajoWhite" IsSynchronizedWithCurrentItem="True" Foreground="Black" Margin="0,151,-0.2,13.2" Grid.Column="1" Name="listBox1" ItemsSource="{Binding Path=MyMessages}"  />
+        <TextBlock Background="NavajoWhite"  Foreground="Black" Margin="0,151,-0.2,13.2" Grid.Column="1" Name="TextBlock_ChatHistory" Text="{Binding Path=MyMessages}"  />
         <TextBox Margin="82,63,123.8,0" IsEnabled="{Binding Textbox_FrensIP_State}" x:Name="textbox_FrensIP" VerticalAlignment="Top" Height="38" Grid.Column="1" Text="{Binding FrensIPText}" TextWrapping="Wrap"/>
         <Label Name="lblYourIP" FontWeight="Bold" Background="#00090202" Foreground="#FFF4E8E8" HorizontalAlignment="Center" Margin="352,8,355.8,0" VerticalAlignment="Top" Width="105" Height="25" Content="{Binding MyIP}" Grid.Column="1" RenderTransformOrigin="0.5,0.5">
             <Label.RenderTransform>
@@ -32,9 +33,13 @@
             </Label.RenderTransform>
         </Label>
         <Label Foreground="#FFF4E8E8" Margin="5,72,736.8,0" VerticalAlignment="Top" Height="25" Content="Fren's IP" Grid.Column="1"/>
-        <Button Margin="0,63,7.8,0" x:Name="button_Start" IsEnabled="{Binding Button_Start_State}" VerticalAlignment="Top" Height="34" Content="Start" Grid.Column="1" HorizontalAlignment="Right" Width="71" Command="{Binding STARTCommand}" CommandParameter="{Binding Text,ElementName=textbox_FrensIP}" />
-        <TextBox Margin="82,114,123.8,0" IsEnabled="{Binding TextBox_Message_State}" x:Name="textBox_Message" VerticalAlignment="Top" Height="34" Text="" TextWrapping="Wrap" Grid.Column="1"/>
-        <Button Margin="0,114,7.8,0" IsEnabled="{Binding Button_Send_State}" x:Name="button_Send" VerticalAlignment="Top" Height="34" Content="Send" Grid.Column="1" HorizontalAlignment="Right" Width="71" Command="{Binding SENDCommand}" CommandParameter="{Binding Text,ElementName=textBox_Message}"/>
+        <Button Margin="0,63,7.8,0" x:Name="button_Start" IsEnabled="{Binding Button_Start_State}" VerticalAlignment="Top" Height="34" Content="Start" Grid.Column="1" HorizontalAlignment="Right" Width="71" Command="{Binding STARTCommand}" CommandParameter="{Binding Text,ElementName=textbox_FrensIP}"/>
+        <TextBox Margin="82,114,123.8,0" IsEnabled="{Binding TextBox_Message_State}" x:Name="textBox_Message" VerticalAlignment="Top" Height="34" Text="{Binding TextBox_Message_Text}" TextWrapping="Wrap" Grid.Column="1"/>
+        <Button Margin="0,114,7.8,0" IsEnabled="{Binding Button_Send_State}" x:Name="button_Send" VerticalAlignment="Top" Height="34" Content="Send" Grid.Column="1" HorizontalAlignment="Right" Width="71" Command="{Binding SENDCommand}" >
+            <Button.CommandParameter>
+                    <Binding Path="Text" ElementName="textBox_Message"/>
+            </Button.CommandParameter>
+        </Button>
         <Label Foreground="#FFF4E8E8" Margin="5,126,736.6,0" VerticalAlignment="Top" Height="25" Content="Message 
 " Grid.Column="1"/>
         <Label x:Name="lblServerMessage" FontWeight="Bold" Background="#00090202" Foreground="{Binding ServerMessage_Foreground}" HorizontalAlignment="Center" Margin="696,9,11.8,0" VerticalAlignment="Top" Width="105" Height="25" Content="{Binding ServerMessage_Content}" Grid.Column="1" RenderTransformOrigin="0.5,0.5">
