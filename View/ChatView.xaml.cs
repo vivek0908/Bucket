@@ -2,9 +2,9 @@
 
 namespace WPF_Chat_ver1.View
 {
-    public partial class Window1 : Window
+    public partial class ChatView : Window
     {
-        public Window1()
+        public ChatView()
         {
             InitializeComponent();
         }
