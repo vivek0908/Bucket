@@ -6,16 +6,12 @@ namespace WPF_Chat_ver1.Command
 {
     public class StartCommand : ICommand
     {
-        public event EventHandler CommunicationStarted;
 
         public event EventHandler CanExecuteChanged;
         public void Execute(object frenip)
         {
             ChatConnection.Instance.StartCommunication(frenip.ToString());
-            if (CommunicationStarted != null)
-            {
-                CommunicationStarted(this, EventArgs.Empty);
-            }
+            
         }
 
         public bool CanExecute(object parameter)

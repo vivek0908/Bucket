@@ -170,7 +170,7 @@ namespace WPF_Chat_ver1.ViewModel
             myHostIP = ChatConnection.Instance.GetLocalIP();
             mySendCommand = new SendCommand();
             myStartCommand = new StartCommand();
-            myStartCommand.CommunicationStarted += (sender, args) =>
+            ChatConnection.Instance.CommunicationStarted += (sender, args) =>
             {
                 InitializeOnServerStart();
             };

@@ -10,6 +10,8 @@ namespace WPF_Chat_ver1.Communication
 {
     internal class ChatConnection
     {
+        public event EventHandler CommunicationStarted;
+
         private static volatile ChatConnection instance;
         private static readonly object syncRoot = new Object();
         private static EndPoint myEndPoint, myEndPointRemote;
@@ -35,7 +37,7 @@ namespace WPF_Chat_ver1.Communication
                 }
                 return instance;
             }
-            set { instance = value; }
+            private set { instance = value; }
         }
 
         internal ChatConnection()
@@ -60,6 +62,11 @@ namespace WPF_Chat_ver1.Communication
                 byte[] buffer = new byte[1464];
                 ChatCommunication.BeginReceiveFrom(buffer, 0, buffer.Length, SocketFlags.None,
                     ref myEndPointRemote, new AsyncCallback(OperatorCallBack),buffer);
+
+                if (CommunicationStarted != null)
+                {
+                    CommunicationStarted(this, EventArgs.Empty);
+                }
             }
             catch (SocketException ex)
             {

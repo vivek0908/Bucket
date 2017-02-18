@@ -9,7 +9,7 @@ namespace WPF_Chat_ver1.Command
 {
     public class SendCommand : ICommand
     {
-        private ChatModel myChatModel;
+        private readonly ChatModel myChatModel;
 
         public SendCommand()
         {
