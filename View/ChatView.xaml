@@ -15,6 +15,11 @@
         <vm:ChatViewModel></vm:ChatViewModel>
     </Window.DataContext>
 
+    <Window.InputBindings>
+        <KeyBinding Key="Enter" Command="{Binding SENDCommand}" CommandParameter="{Binding Text, ElementName=textBox_Message}"/>
+    </Window.InputBindings>
+    <!--<-->
+
     <Grid x:Name="LayoutRoot" Background="MediumTurquoise">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0*"/>
