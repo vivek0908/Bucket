@@ -1,47 +1,36 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 
 namespace WPF_Chat_ver1.Model
 {
     internal class ChatModel
     {
+        public event EventHandler MessageIsUpdated;
+        public event EventHandler MessageIsSend;
         private static volatile ChatModel Instance;
-        private ObservableCollection<string> myMessageRecieved;
-        private ObservableCollection<string> myMessageSend;
+        private string myNewMessageText;
 
         public static ChatModel INSTANCE
         {
             get { return Instance ?? (Instance = new ChatModel()); }
         }
 
-        public ObservableCollection<string> MESSAGERECIEVED
+        public string UpdatedMessageText
         {
-            get { return myMessageRecieved; }
+            get { return myNewMessageText; }
             set
             {
-                myMessageRecieved = value;
-                if (MessageReceived != null)
+                myNewMessageText = value;
+                if (MessageIsUpdated != null)
                 {
-                    MessageReceived(this,EventArgs.Empty);
+                    MessageIsUpdated(this, EventArgs.Empty);
+                }
+
+                if (MessageIsSend != null)
+                {
+                    MessageIsSend(this, EventArgs.Empty);
                 }
             }
         }
 
-        public ObservableCollection<string> MESSAGESEND
-        {
-            get { return myMessageSend; }
-            set
-            {
-                myMessageSend = value;
-                if (MessageSend != null)
-                {
-                    MessageSend(this, EventArgs.Empty);
-                }
-            }
-        }
-
-        public event EventHandler MessageReceived;
-
-        public event EventHandler MessageSend;
     }
 }
